@@ -61,9 +61,13 @@ var blockChain []Block
 type Trustee struct{
 	name string
 	votes int
+	_time float64
+	credit float64
 }
 
 type trusteeList [] Trustee
+
+
 
 func (_trusteeList trusteeList) Len() int{
 	return len(_trusteeList)
@@ -78,21 +82,28 @@ func (_trusteeList trusteeList) Less(i,j int) bool{
 }
 
 func selecTrustee()([]Trustee){
+	rand. Seed(time .Now().UnixNano())  //random
 	_trusteeList := []Trustee{
-		{"node1", rand.Intn(100)},
-		{"node2", rand.Intn(100)},
-		{"node3", rand.Intn(100)},
-		{"node4", rand.Intn(100)},
-		{"node5", rand.Intn(100)},
-		{"node6", rand.Intn(100)},
-		{"node7", rand.Intn(100)},
-		{"node8", rand.Intn(100)},
-		{"node9", rand.Intn(100)},
-		{"node10", rand.Intn(100)},
-		{"node11", rand.Intn(100)},
-		{"node12", rand.Intn(100)},
+		{"node1", rand.Intn(100),30,500},
+		{"node2", rand.Intn(100),30,500},
+		{"node3", rand.Intn(100),30,500},
+		{"node4", rand.Intn(100),30,500},
+		{"node5", rand.Intn(100),30,500},
+		{"node6", rand.Intn(100),30,500},
+		{"node7", rand.Intn(100),30,500},
+		{"node8", rand.Intn(100),30,500},
+		{"node9", rand.Intn(100),30,500},
+		{"node10", rand.Intn(100),30,500},
+		{"node11", rand.Intn(100),30,500},
+		{"node12", rand.Intn(100),30,500},
 	}
 	sort.Sort(trusteeList(_trusteeList))
+	fmt.Print(_trusteeList)
+	l:=_trusteeList[:]
+	fmt.Print(l)
+	for i:=0;i<12;i++{
+		_list = l
+	}
 	result := _trusteeList[:5]
 	_trusteeList = result[1:]
 	_trusteeList = append(_trusteeList, result[0])
