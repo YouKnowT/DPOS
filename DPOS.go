@@ -75,18 +75,18 @@ type Trustee struct {
 type trusteeList []Trustee
 
 var _trusteeList = []Trustee{
-	{"node1", 0, 1.0, 500.0, 0.0},
-	{"node2", 0, 1.0, 500.0, 0.0},
-	{"node3", 0, 1.0, 500.0, 0.0},
-	{"node4", 0, 1.0, 500.0, 0.0},
-	{"node5", 0, 1.0, 500.0, 0.0},
-	{"node6", 0, 1.0, 500.0, 0.0},
-	{"node7", 0, 1.0, 500.0, 0.0},
-	{"node8", 0, 1.0, 500.0, 0.0},
-	{"node9", 0, 1.0, 500.0, 0.0},
-	{"node10", 0, 1.0, 500.0, 0.0},
-	{"node12", 0, 1.0, 500.0, 0.0},
-	{"node12", 0, 1.0, 500.0, 0.0},
+	{"node1", 0, 30.0, 500.0, 0.0},
+	{"node2", 0, 30.0, 500.0, 0.0},
+	{"node3", 0, 30.0, 500.0, 0.0},
+	{"node4", 0, 30.0, 500.0, 0.0},
+	{"node5", 0, 30.0, 500.0, 0.0},
+	{"node6", 0, 30.0, 500.0, 0.0},
+	{"node7", 0, 30.0, 500.0, 0.0},
+	{"node8", 0, 30.0, 500.0, 0.0},
+	{"node9", 0, 30.0, 500.0, 0.0},
+	{"node10", 0, 30.0, 500.0, 0.0},
+	{"node11", 0, 30.0, 500.0, 0.0},
+	{"node12", 0, 30.0, 500.0, 0.0},
 }
 
 func (_trusteeList trusteeList) Len() int {
@@ -101,13 +101,19 @@ func (_trusteeList trusteeList) Less(i, j int) bool {
 	return _trusteeList[j].super < _trusteeList[i].super
 }
 
-func selecTrustee(_node []Node) []Trustee {
+func selecTrustee() []Trustee {
 	var _trusteeList1 []Trustee
-	for i := 0; i < len(_node); i++ {
-		if _trusteeList[i].age != 30 {
-			_trusteeList[i].age += 1
+	for i := 0; i < len(_trusteeList); i++ {
+		if _trusteeList[i].age != 0 {
+			_trusteeList[i].age -= 1
 		}
-		_trusteeList[i].coin = _node[i].coin
+		if _trusteeList[i].credit > 1000 {
+			_trusteeList[i].credit = 500
+		}
+		if _trusteeList[i].coin > 1500 {
+			_trusteeList[i].coin = 1500
+		}
+		//_trusteeList[i].coin = _node[i].coin
 		_trusteeList[i].super = 0.3*_trusteeList[i].age*float32(_trusteeList[i].coin) + 0.7*_trusteeList[i].credit
 	}
 	sort.Sort(trusteeList(_trusteeList))
@@ -128,25 +134,28 @@ func main() {
 	fmt.Println("创世块block: ", genesisBlock)
 	blockChain = append(blockChain, genesisBlock)
 	var trustee Trustee
+	rand.Seed(time.Now().UnixNano()) //random
+	var _node = []Node{
+		{"node1", rand.Float32() * 100},
+		{"node2", rand.Float32() * 100},
+		{"node3", rand.Float32() * 100},
+		{"node4", rand.Float32() * 100},
+		{"node5", rand.Float32() * 100},
+		{"node6", rand.Float32() * 100},
+		{"node7", rand.Float32() * 100},
+		{"node8", rand.Float32() * 100},
+		{"node9", rand.Float32() * 100},
+		{"node10", rand.Float32() * 100},
+		{"node11", rand.Float32() * 100},
+		{"node12", rand.Float32() * 100},
+	}
+	for i := 0; i < len(_node); i++ {
+		_trusteeList[i].coin = _node[i].coin
+	}
 
 L1:
 	for i := 0; ; i++ {
-		rand.Seed(time.Now().UnixNano()) //random
-		var _node = []Node{
-			{"node1", rand.Float32() * 10},
-			{"node2", rand.Float32() * 10},
-			{"node3", rand.Float32() * 10},
-			{"node4", rand.Float32() * 10},
-			{"node5", rand.Float32() * 10},
-			{"node6", rand.Float32() * 10},
-			{"node7", rand.Float32() * 10},
-			{"node8", rand.Float32() * 10},
-			{"node9", rand.Float32() * 10},
-			{"node10", rand.Float32() * 10},
-			{"node11", rand.Float32() * 10},
-			{"node12", rand.Float32() * 10},
-		}
-		for _, trustee = range selecTrustee(_node) {
+		for _, trustee = range selecTrustee() {
 			time.Sleep(2000000000)
 			_BPM := rand.Intn(100)
 			blockHeight := len(blockChain)
@@ -161,7 +170,7 @@ L1:
 				fmt.Println("当前操作区块节点为：", trustee.name)
 				for j := 0; j < len(_trusteeList); j++ {
 					if _trusteeList[j].name == trustee.name {
-						_trusteeList[j].credit += 50
+						_trusteeList[j].credit += 10
 						_trusteeList[j].age = 0
 						_trusteeList[j].coin += (_trusteeList[j].super / 365) * 0.04
 						break
@@ -173,7 +182,7 @@ L1:
 				fmt.Println("当前操作区块节点为：", trustee.name)
 				for j := 0; j < len(_trusteeList); j++ {
 					if _trusteeList[j].name == trustee.name {
-						_trusteeList[j].credit -= 20
+						_trusteeList[j].credit -= 200
 						//_trusteeList[j].age=0
 						//_trusteeList[j].coin+=(_trusteeList[j].super/365)*0.04
 						break
